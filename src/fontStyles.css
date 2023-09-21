@@ -1,0 +1,14 @@
+@font-face {
+    font-family: visby;
+    src: url(./fonts/visbyMedium.otf);
+}
+
+@font-face {
+    font-family: satoshi;
+    src: url(./fonts/satoshiMedium.otf);
+}
+
+@font-face {
+    font-family: satoshiRegular;
+    src: url(./fonts/SatoshiRegular.otf);
+}
