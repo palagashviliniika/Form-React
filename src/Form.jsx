@@ -138,7 +138,6 @@ const Form = () => {
         setFormErrors(errors);
     
         if (Object.values(errors).every((error) => !error)) {
-          console.log('Form submitted successfully');
           // Perform form submission logic here
           emailjs
             .sendForm(
@@ -149,12 +148,10 @@ const Form = () => {
                 )
             .then(
                 (result) => {
-                console.log(result.text);
-                console.log("Message Sent");
+
             }, 
             (error) => {
-                console.log(error.text);
-                console.log("Message Failed");
+
             });
         }
       };
