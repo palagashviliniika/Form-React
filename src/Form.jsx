@@ -192,51 +192,7 @@ const Form = () => {
         
         <div style={containerStyle}>
 
-            <style>
-                {`
-                @media (max-width: 767px) {
-                        h1 {
-                        font-size: 24px !important; // Font size for mobile
-                        }
-
-                        p {
-                            font-size: 14px !important; // Font size for mobile
-                        }
-
-                        input {
-                            font-size: 14px !important; // Font size for mobile
-                        }
-
-                        button {
-                            font-size: 14px !important; // Font size for mobile
-                        }
-                    }
-                }
-                `}
-            </style>
-
-            {/* Media query for tablets */}
-            <style>
-                {`
-                @media (min-width: 768px) and (max-width: 1023px) {
-                        h1 {
-                        font-size: 32px !important; // Font size for tablet
-                        }
-
-                        p {
-                        font-size: 14px !important; // Font size for tablet
-                        }
-
-                        input {
-                            font-size: 14px !important; // Font size for mobile
-                        }
-
-                        button {
-                            font-size: 14px !important; // Font size for mobile
-                        }
-                }
-                `}
-            </style>
+            
 
             <h1 style={headerStyle}>Reach out</h1>
             <p style={descrStyle}>Tell us a little bit about what we want to create</p>
@@ -292,7 +248,51 @@ const Form = () => {
                 </button>
             </form>
 
-            
+            <style>
+                {`
+                @media (max-width: 767px) {
+                        h1 {
+                        font-size: 24px !important; // Font size for mobile
+                        }
+
+                        p {
+                            font-size: 14px !important; // Font size for mobile
+                        }
+
+                        input {
+                            font-size: 14px !important; // Font size for mobile
+                        }
+
+                        button {
+                            font-size: 14px !important; // Font size for mobile
+                        }
+                    }
+                }
+                `}
+            </style>
+
+            {/* Media query for tablets */}
+            <style>
+                {`
+                @media (min-width: 768px) and (max-width: 1023px) {
+                        h1 {
+                        font-size: 32px !important; // Font size for tablet
+                        }
+
+                        p {
+                        font-size: 14px !important; // Font size for tablet
+                        }
+
+                        input {
+                            font-size: 14px !important; // Font size for mobile
+                        }
+
+                        button {
+                            font-size: 14px !important; // Font size for mobile
+                        }
+                }
+                `}
+            </style>            
 
         </div>
     );
