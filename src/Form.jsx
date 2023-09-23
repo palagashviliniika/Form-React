@@ -22,6 +22,8 @@ const Form = () => {
     const [isSubmit, setIsSubmit] = useState(false)
     const [isClicked, setIsClicked] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isCleared, setIsCleared] = useState(false);
+
 
     
     const form = useRef();
@@ -35,6 +37,8 @@ const Form = () => {
         justifyContent: "center",
         padding: "2vw 4vw",
         fontFamily: "satoshiRegular",
+        marginLeft: "auto",
+        marginRight: "auto"
     }
     
     const formStyle = {
@@ -54,9 +58,11 @@ const Form = () => {
     
     const descrStyle = {
         fontSize: "16px",
-        marginBottom: "32px",
+        paddingTop: "4px",
+        marginBottom: "16px",
         marginTop: 0,
-        color: "#CFCFCF",
+        color: "#FFFFFF",
+        opacity: "80%"
     }
 
     const msgStyle = {
@@ -102,7 +108,7 @@ const Form = () => {
         outline: "none",
         cursor: "pointer",
         transition: "0.2s ease-in",
-        background: isHover ? "#282828" : "#2E898D",
+        background: isHover ? "#19595c" : "#2E898D",
         transform: isClicked ? 'scale(0.9)' : 'scale(1)', // Scale the button on click
 
     }
@@ -116,24 +122,27 @@ const Form = () => {
     }
 
     const handleChange = (event) => {
-        const {name, value} = event.target
+        if (!isSubmitted) {
+          const { name, value } = event.target;
 
-        const newValue =
-        name === "budget"
-          ? value === "" || value === "$ "
-            ? ""
-            : !value.startsWith("$")
-            ? `$ ${value}`
-            : value
-          : value;
+          setIsCleared(false); // Reset the isCleared flag
 
-        setFormData(prevFormData => {
-            return {
-                ...prevFormData,
-                [name]: newValue
-            }
-        })
-    }
+      
+          const newValue =
+            name === "budget"
+              ? value === "" || value === "$ "
+                ? ""
+                : !value.startsWith("$")
+                ? `$ ${value}`
+                : value
+              : value;
+      
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: newValue
+          }));
+        }
+      };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -160,24 +169,38 @@ const Form = () => {
           // Perform form submission logic here
           emailjs
             .sendForm(
-                'service_jbl85xs', 
-                'template_vbntieg', 
+                'service_so5ikq8', 
+                'template_bma3u7v', 
                 form.current, 
-                '97jMgRU9uAuzx_eSn'
+                'Wvx4epQEqidTFFDXG'
                 )
             .then(
                 (result) => {
-                    console.log(result.text);
-                    console.log("Sent");
                     setIsSubmitted(true)
+                    setIsCleared(true); // Set isCleared to true after successful submission
+                    resetForm()
                     
             }, 
             (error) => {
-                console.log(error.text);
-                    console.log("error");
                     setIsSubmitted(false)
             });
         }
+      };
+
+      const resetForm = () => {
+        setFormData({
+          name: "",
+          email: "",
+          budget: "",
+          message: ""
+        });
+      
+        setFormErrors({
+          name: false,
+          email: false,
+          budget: false,
+          message: false
+        });
       };
 
     useEffect(() => {
@@ -214,64 +237,79 @@ const Form = () => {
         <div style={containerStyle}>
 
             
-
-            <h1 style={headerStyle}>Reach out</h1>
-            <p style={descrStyle}>Tell us a little bit about what we want to create</p>
-            <form 
-                style={formStyle}
-                onSubmit={handleSubmit}
-                ref={form}
-            >
-                <input 
-                    type="text"
-                    placeholder='Full Name'
-                    name='name'
-                    id='name' 
-                    value={formData.name}
-                    onChange={handleChange}
-                    style={{...inputStyle, border: formErrors.name ? "1px solid #FF5555" : "1px solid transparent"}}
-                />
-                <input 
-                    type="email"
-                    placeholder='Email'
-                    name='email'
-                    id='email' 
-                    value={formData.email}
-                    onChange={handleChange}
-                    style={{...inputStyle, border: formErrors.email ? "1px solid #FF5555" : "1px solid transparent"}}
-                />
-                <input 
-                    type="text"
-                    placeholder='$ Expected Budget'
-                    name='budget'
-                    id='budget' 
-                    value={formData.budget}
-                    onChange={handleChange}
-                    style={{...inputStyle, border: formErrors.budget ? "1px solid #FF5555" : "1px solid transparent"}}
-                />
-                <textarea
-                    placeholder='Describe Project'
-                    name='message'
-                    id='message'
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    style={txtAreaStyle}
-                />
-                <button
-                    type='submit'
-                    value="Send"
-                    style={btnStyle}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+            <div className='inner'>
+                <h1 style={headerStyle}>Reach out</h1>
+                <p style={descrStyle}>Tell us a little bit about what we want to create</p>
+                <form 
+                    style={formStyle}
+                    onSubmit={handleSubmit}
+                    ref={form}
                 >
-                    Send Message
-                </button>
-            </form>
+                    <input 
+                        type="text"
+                        placeholder='Full Name'
+                        name='name'
+                        id='name' 
+                        value={formData.name}
+                        onChange={handleChange}
+                        style={{
+                            ...inputStyle,
+                            border: formErrors.name && !isCleared ? "1px solid #FF5555" : "1px solid transparent"
+                    }}
+                    />
+                    <input 
+                        type="email"
+                        placeholder='Email'
+                        name='email'
+                        id='email' 
+                        value={formData.email}
+                        onChange={handleChange}
+                        style={{
+                            ...inputStyle,
+                            border: formErrors.email && !isCleared ? "1px solid #FF5555" : "1px solid transparent"
+                    }}
+                    />
+                    <input 
+                        type="text"
+                        placeholder='$ Expected Budget'
+                        name='budget'
+                        id='budget' 
+                        value={formData.budget}
+                        onChange={handleChange}
+                        style={{
+                            ...inputStyle,
+                            border: formErrors.budget && !isCleared ? "1px solid #FF5555" : "1px solid transparent"
+                    }}
+                    />
+                    <textarea
+                        placeholder='Describe Project'
+                        name='message'
+                        id='message'
+                        value={formData.message}
+                        onChange={handleChange}
+                        rows={4}
+                        style={{
+                            ...txtAreaStyle,
+                            border: formErrors.message && !isCleared ? "1px solid #FF5555" : "1px solid transparent"
 
-            {isSubmitted && 
-                <p style={msgStyle}>Thanks for contacting us. We will come back to you soon!</p>
-            }
+                        }}
+                    />
+                    <button
+                        type='submit'
+                        value="Send"
+                        style={btnStyle}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        Send Message
+                    </button>
+                </form>
+
+                {isSubmitted && 
+                    <p style={msgStyle}>Thanks for contacting us. We will come back to you soon!</p>
+                }
+            </div>
+            
 
             <style>
                 {`
@@ -285,11 +323,16 @@ const Form = () => {
                         }
 
                         input {
-                            font-size: 14px !important; // Font size for mobile
+                            font-size: 14px !important;
+                            margin: 8px 0 !important;
                         }
 
                         button {
                             font-size: 14px !important; // Font size for mobile
+                        }
+                        .inner {
+                            margin-left: auto !important;
+                            margin-right: auto !important;
                         }
                     }
                 }
@@ -309,11 +352,17 @@ const Form = () => {
                         }
 
                         input {
-                            font-size: 14px !important; // Font size for mobile
+                            font-size: 14px !important;
+                            margin: 10px 0 !important;
                         }
 
                         button {
                             font-size: 14px !important; // Font size for mobile
+                        }
+
+                        .inner {
+                            margin-left: auto !important;
+                            margin-right: auto !important;
                         }
                 }
                 `}
