@@ -21,6 +21,7 @@ const Form = () => {
     })
     const [isSubmit, setIsSubmit] = useState(false)
     const [isClicked, setIsClicked] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false)
 
     
     const form = useRef();
@@ -57,6 +58,14 @@ const Form = () => {
         marginTop: 0,
         color: "#CFCFCF",
     }
+
+    const msgStyle = {
+        fontSize: "16px",
+        marginBottom: "32px",
+        marginTop: "24px",
+        color: "#2E898D",
+    }
+    
     
     const inputStyle = {
         fontFamily: "satoshiRegular",
@@ -108,10 +117,20 @@ const Form = () => {
 
     const handleChange = (event) => {
         const {name, value} = event.target
+
+        const newValue =
+        name === "budget"
+          ? value === "" || value === "$ "
+            ? ""
+            : !value.startsWith("$")
+            ? `$ ${value}`
+            : value
+          : value;
+
         setFormData(prevFormData => {
             return {
                 ...prevFormData,
-                [name]: value
+                [name]: newValue
             }
         })
     }
@@ -148,10 +167,15 @@ const Form = () => {
                 )
             .then(
                 (result) => {
-
+                    console.log(result.text);
+                    console.log("Sent");
+                    setIsSubmitted(true)
+                    
             }, 
             (error) => {
-
+                console.log(error.text);
+                    console.log("error");
+                    setIsSubmitted(false)
             });
         }
       };
@@ -178,7 +202,7 @@ const Form = () => {
           email: !value.trim() ? 'Email is required' : /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value) ? '' : 'Invalid email format',
         }),
         budget: (value) => ({
-          budget: !value.trim() ? 'budget is required' : '',
+          budget: !value.trim() ? 'budget is required' : /^[-\d\s$]*$/.test(value) ? '' : 'Invalid number format',
         }),
         message: (value) => ({
           message: !value.trim() ? 'message is required' : '',
@@ -244,6 +268,10 @@ const Form = () => {
                     Send Message
                 </button>
             </form>
+
+            {isSubmitted && 
+                <p style={msgStyle}>Thanks for contacting us. We will come back to you soon!</p>
+            }
 
             <style>
                 {`
